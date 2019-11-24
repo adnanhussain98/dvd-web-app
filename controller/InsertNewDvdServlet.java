@@ -7,6 +7,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import database.MyDAO;
 import models.DVD;
@@ -22,23 +23,28 @@ public class InsertNewDvdServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		//int id = Integer.valueOf(request.getParameter("id"));
-		String title = request.getParameter("title");
-		String genre = request.getParameter("genre");
-		int year = Integer.valueOf(request.getParameter("year"));
-		
-		DVD dvd = new DVD(88, title, genre, year);
+		HttpSession session = request.getSession();
 
-		MyDAO dao = new MyDAO();
+		if (null != session.getAttribute("loggedin") && (boolean) session.getAttribute("loggedin")) {
 
-		try {
-		dao.insertDVD(dvd);
-		} catch (SQLException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
+			// int id = Integer.valueOf(request.getParameter("id"));
+			String title = request.getParameter("title");
+			String genre = request.getParameter("genre");
+			int year = Integer.valueOf(request.getParameter("year"));
+
+			DVD dvd = new DVD(88, title, genre, year);
+
+			MyDAO dao = new MyDAO();
+
+			try {
+				dao.insertDVD(dvd);
+				response.sendRedirect("./GetDvdServlet");
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		} else {
+			response.sendRedirect("./LoginServlet");
 		}
 	}
-	
-	
 
 }

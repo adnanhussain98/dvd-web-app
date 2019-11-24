@@ -7,9 +7,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import database.MyDAO;
-import models.DVD;
 
 @WebServlet("/DeleteDvdServlet")
 public class DeleteDvdServlet extends HttpServlet {
@@ -19,22 +19,25 @@ public class DeleteDvdServlet extends HttpServlet {
 		super();
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		int id = Integer.valueOf(request.getParameter("id"));
-		String title = request.getParameter("title");
-		String genre = request.getParameter("genre");
-		int year = Integer.valueOf(request.getParameter("year"));
+		HttpSession session = request.getSession();
 
-		DVD dvd = new DVD(id, title, genre, year);
+		if (null != session.getAttribute("loggedin") && (boolean) session.getAttribute("loggedin")) {
 
-		MyDAO dao = new MyDAO();
+			// gets the value of the id key
+			int id = Integer.valueOf(request.getParameter("id"));
+			MyDAO dao = new MyDAO();
 
-		try {
-			dao.deleteDVD(dvd);
-		} catch (SQLException e) {
-			e.printStackTrace();
+			try {
+				dao.deleteDVD(id);
+				response.sendRedirect("./GetDvdServlet");
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		} else {
+			response.sendRedirect("./LoginServlet");
 		}
 	}
 }

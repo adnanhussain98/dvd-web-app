@@ -1,0 +1,26 @@
+@charset "ISO-8859-1";
+
+
+.btn {
+background: cornflowerblue; 
+padding: 10px;
+margin: 10px 0;
+border-radius: 10px;
+color: #fff;
+text-decoration: none;
+}
+
+td {
+padding: 20px 10px;
+}
+
+homeBtn{
+
+padding: 10px;
+margin: 10px 0;
+border-radius: 10px;
+color: #fff;
+text-decoration: none;
+	background: red; 
+	
+}
