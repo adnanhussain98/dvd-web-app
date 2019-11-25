@@ -9,18 +9,42 @@
 <head>
 <meta charset="UTF-8">
 <title>Update DVD</title>
+<link
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+	rel="stylesheet" />
 </head>
-<body>
+<div class="container text-centerth">
+	<h1>Update DVD</h1>
+	<body>
 
-	<form action="./UpdateDvdServlet" method="POST">
+		<form action="./UpdateDvdServlet" method="POST">
 
-		<input type="hidden" name="id" value="${dvd.getId()}"> 
-		<input type="text" name="title" placeholder="Title" value="${dvd.getTitle()}"> 
-		<input type="text" name="genre" placeholder="Genre" value="${dvd.getGenre()}"> 
-		<input type="number" name="year" placeholder="Year" value="${dvd.getYear()}">
-		<button type="submit">Update</button>
+			<input type="hidden" name="id" value="${dvd.getId()}">
 
-	</form>
+			<div class="form-group row">
+				<label for="inputTitle" class="col-sm-2 col-form-label">Title</label>
+				<div class="col-sm-10">
+					<input type="text" name="Title" value="${dvd.getTitle()}">
+				</div>
+			</div>
 
+			<div class="form-group row">
+				<label for="inputGenre" class="col-sm-2 col-form-label">Genre</label>
+				<div class="col-sm-10">
+					<input type="text" name="Genre" value="${dvd.getGenre()}">
+				</div>
+			</div>
+			<div class="form-group row">
+				<label for="inputYear" class="col-sm-2 col-form-label">Year</label>
+				<div class="col-sm-10">
+					<input type="text" name="Year" value="${dvd.getYear()}">
+				</div>
+			</div>
+			<button type="submit" class="btn btn-success">Update</button>
+
+		</form>
+		
+			<a href="./GetDvdServlet">Back</a>
+</div>
 </body>
 </html>

@@ -36,9 +36,10 @@ public class LoginServlet extends HttpServlet {
 
 		try {
 			if (dao.validateUserInfo(un, pw)) {
-				//
 				HttpSession session = request.getSession();
 				session.setAttribute("loggedin", true);
+				//creates object "username" of un 
+				session.setAttribute("username", un);
 				response.sendRedirect("./GetDvdServlet");
 			} else {
 				request.getRequestDispatcher("login.jsp").forward(request, response);

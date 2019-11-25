@@ -28,8 +28,6 @@ public class GetDvdServlet extends HttpServlet {
 
 		HttpSession session = request.getSession();
 
-		// session.setAttribute("loggedin", false);
-
 		MyDAO dao = new MyDAO();
 
 		try {

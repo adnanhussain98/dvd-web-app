@@ -32,17 +32,20 @@ public class InsertNewDvdServlet extends HttpServlet {
 			String genre = request.getParameter("genre");
 			int year = Integer.valueOf(request.getParameter("year"));
 
+			// created object of DVD class
 			DVD dvd = new DVD(88, title, genre, year);
 
 			MyDAO dao = new MyDAO();
 
 			try {
 				dao.insertDVD(dvd);
+				//inserts DVD is the user is logged in
 				response.sendRedirect("./GetDvdServlet");
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 		} else {
+			//redirects user to login if they haven't logged in
 			response.sendRedirect("./LoginServlet");
 		}
 	}

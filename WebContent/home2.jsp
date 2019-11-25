@@ -33,34 +33,28 @@
 				<li class="nav-item active"><a class="nav-link" href="#">Home
 						<span class="sr-only">(current)</span>
 				</a></li>
-				<li class="nav-item"><a class="nav-link" href="#">Link</a></li>
-				<li class="nav-item dropdown"><a
-					class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
-					role="button" data-toggle="dropdown" aria-haspopup="true"
-					aria-expanded="false"> Dropdown </a>
-					<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-						<a class="dropdown-item" href="#">Action</a> <a
-							class="dropdown-item" href="#">Another action</a>
-						<div class="dropdown-divider"></div>
-						<a class="dropdown-item" href="#">Something else here</a>
-					</div></li>
-				<li class="nav-item"><a class="nav-link disabled" href="#"
-					tabindex="-1" aria-disabled="true">Disabled</a></li>
+
 			</ul>
 
-
+			<!-- if the user is logged in, their name will be displayed with a greeting and there will be a logout button -->
 			<c:choose>
 				<c:when test="${sessionScope.loggedin==true}">
 					<a class="btn btn-danger" href="./LogOutServlet">Logout</a>
+					<div id="user" class="btn btn-success">
+						<!-- object of user -->
+						Hello ${username}
+					</div>
 					<br />
 				</c:when>
 				<c:otherwise>
 					<a class="btn btn-success" href="./LoginServlet">Login</a>
+					<a class="btn btn-primary" href="./SignupServlet">Sign Up</a>
 					<br />
 				</c:otherwise>
 			</c:choose>
 
 		</div>
+
 	</nav>
 
 

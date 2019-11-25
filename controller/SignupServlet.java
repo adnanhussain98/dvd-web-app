@@ -36,6 +36,7 @@ public class SignupServlet extends HttpServlet {
 		MyDAO dao = new MyDAO();
 		try {
 			dao.insertUser(user);
+			response.sendRedirect("./GetDvdServlet");
 		} catch (SQLException e) {
 			
 			e.printStackTrace();
