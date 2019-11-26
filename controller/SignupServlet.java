@@ -30,8 +30,9 @@ public class SignupServlet extends HttpServlet {
 
 		String un = request.getParameter("username");
 		String pw = request.getParameter("password1");
+		String apikey = getAlphaNumericString(9);
 		
-		User user = new User(un,pw, "");
+		User user = new User(un,pw, apikey);
 		
 		MyDAO dao = new MyDAO();
 		try {
@@ -42,6 +43,19 @@ public class SignupServlet extends HttpServlet {
 			e.printStackTrace();
 		}
 	
+	}
+	
+	public String getAlphaNumericString(int n) {
+		// choose a charatcter random from this string
+		String AlphaNumericString = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+		// create Stringbuffer size of of AlphanumericString
+		StringBuilder sb = new StringBuilder(n);
+		
+		for (int i = 0; i < n; i++) {
+			int index = (int)(AlphaNumericString.length() * Math.random());
+			sb.append(AlphaNumericString.charAt(index));
+		}
+		return sb.toString();
 	}
 
 }

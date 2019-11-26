@@ -42,7 +42,7 @@
 					<a class="btn btn-danger" href="./LogOutServlet">Logout</a>
 					<div id="user" class="btn btn-success">
 						<!-- object of user -->
-						Hello ${username}
+						Hello ${sessionScope.user.getUsername()}
 					</div>
 					<br />
 				</c:when>

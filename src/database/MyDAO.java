@@ -2,6 +2,7 @@ package database;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -141,13 +142,18 @@ public class MyDAO {
 
 	}
 
-	public boolean validateUserInfo(String un, String pw) throws SQLException {
+	public User validateUserInfo(String un, String pw) throws SQLException {
 
 		// makes connection to the database
 		Connection connection = getConnection();
-		Statement statement = connection.createStatement();
+		//adding the question marks to protect
+		String sql = "SELECT username, password, apikey,  COUNT (*) as valid FROM Users WHERE username = ? AND password = ?";
 
-		String sql = "SELECT COUNT (*) as valid FROM Users WHERE username = '" + un + "' AND password = '" + pw + "';";
+		PreparedStatement statement = connection.prepareStatement(sql);
+		
+		// add variables to the prepared statement
+		statement.setString(1, un);
+		statement.setString(2, pw);
 
 		System.out.println(sql);
 		ResultSet rs = statement.executeQuery(sql);
@@ -157,15 +163,19 @@ public class MyDAO {
 			// look in the result set and check if it is valid
 			int valid = rs.getInt("valid");
 
-			if (valid == 1) {
-				// all good
+			if (valid > 0) {
+				System.out.println("valid user");
+				String username = rs.getString("username");
+				String password = rs.getString("password");
+				String api = rs.getString("apikey");
+
 				connection.close();
-				return true;
+				return new User(username, password, api);
 			}
 
 		}
 		connection.close();
-		return false;
+		return null;
 
 	}
 
@@ -174,14 +184,42 @@ public class MyDAO {
 		Connection connection = getConnection();
 		Statement statement = connection.createStatement();
 
-		String sql = "INSERT INTO users (username, password)" + " VALUES ('" + user.getUsername() + "', '"
-				+ user.getPassword() + "');";
+		String sql = "INSERT INTO users (username, password, apikey)" + " VALUES ('" + user.getUsername() + "', '"
+				+ user.getPassword() + "', '" + user.getApi() + "');";
 		System.out.println(sql);
 
 		statement.executeUpdate(sql);
 		System.out.println("done");
-		
+
 		connection.close();
+
+	}
+
+	public boolean checkKey(String apikey) throws SQLException {
+
+		// makes connection to the database
+		Connection connection = getConnection();
+		Statement statement = connection.createStatement();
+
+		String sql = "SELECT COUNT (*) as valid FROM Users WHERE apikey = '" + apikey + "';";
+
+		System.out.println(sql);
+		ResultSet rs = statement.executeQuery(sql);
+
+		// checks the result set
+		while (rs.next()) {
+			// look in the result set and check if it is valid
+			int valid = rs.getInt("valid");
+
+			if (valid == 0) {
+				// all good
+				connection.close();
+				return true;
+			}
+
+		}
+		connection.close();
+		return false;
 
 	}
 

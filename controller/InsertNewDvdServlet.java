@@ -39,13 +39,13 @@ public class InsertNewDvdServlet extends HttpServlet {
 
 			try {
 				dao.insertDVD(dvd);
-				//inserts DVD is the user is logged in
+				// inserts DVD is the user is logged in
 				response.sendRedirect("./GetDvdServlet");
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 		} else {
-			//redirects user to login if they haven't logged in
+			// redirects user to login if they haven't logged in
 			response.sendRedirect("./LoginServlet");
 		}
 	}

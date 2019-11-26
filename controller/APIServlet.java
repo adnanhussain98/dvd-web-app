@@ -25,7 +25,7 @@ public class APIServlet extends HttpServlet {
 	Gson gson = new Gson();
 	MyDAO dao = new MyDAO();
 
-	//params in url
+	// params in url
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
@@ -33,7 +33,13 @@ public class APIServlet extends HttpServlet {
 		response.setHeader("Content-Type", "application/json");
 
 		try {
-			writer.write(gson.toJson(dao.getDVDs()));
+			if (dao.checkKey(request.getParameter("apikey"))) {
+				writer.write(gson.toJson(dao.getDVDs()));
+
+			} else {
+				writer.write("invalid api key");
+
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -41,43 +47,59 @@ public class APIServlet extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+
+		PrintWriter writer = response.getWriter();
 		String dvd = request.getParameter("dvd");
 
 		DVD d = gson.fromJson(dvd, DVD.class);
 		try {
-			dao.insertDVD(d);
+			if (dao.checkKey(request.getParameter("apikey"))) {
+
+				dao.insertDVD(d);
+			} else {
+				writer.write("invalid api key");
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 
 	}
 
-	//params in url
+	// params in url
 	@Override
 	protected void doPut(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
+		PrintWriter writer = response.getWriter();
 		String dvd = request.getParameter("dvd");
 
 		DVD d = gson.fromJson(dvd, DVD.class);
 
 		try {
-			dao.updateDVD(d);
+			if (dao.checkKey(request.getParameter("apikey"))) {
+				dao.updateDVD(d);
+			} else {
+				writer.write("invalid api key");
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
 
-	
 	@Override
-	//params in url. ?id=6
+	// params in url. ?id=6
 	protected void doDelete(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
+		PrintWriter writer = response.getWriter();
 		int id = Integer.valueOf(request.getParameter("id"));
 
 		try {
-			dao.deleteDVD(id);
+			if (dao.checkKey(request.getParameter("apikey"))) {
+				dao.deleteDVD(id);
+			} else {
+				writer.write("invalid api key");
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

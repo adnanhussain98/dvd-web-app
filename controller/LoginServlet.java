@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import database.MyDAO;
+import models.User;
 
 @WebServlet("/LoginServlet")
 public class LoginServlet extends HttpServlet {
@@ -35,11 +36,14 @@ public class LoginServlet extends HttpServlet {
 		MyDAO dao = new MyDAO();
 
 		try {
-			if (dao.validateUserInfo(un, pw)) {
+
+			User user = dao.validateUserInfo(un, pw);
+
+			if (user != null) {
+
 				HttpSession session = request.getSession();
 				session.setAttribute("loggedin", true);
-				//creates object "username" of un 
-				session.setAttribute("username", un);
+				session.setAttribute("user", user);
 				response.sendRedirect("./GetDvdServlet");
 			} else {
 				request.getRequestDispatcher("login.jsp").forward(request, response);
